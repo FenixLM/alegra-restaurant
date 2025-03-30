@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container-alegra
+    environment:
+      POSTGRES_DB: restaurant
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports: ["5432:5432"]
+    volumes: [postgres_data:/var/lib/postgresql/data]
+
+  mongodb:
+    image: mongo:latest
+    ports: ["27017:27017"]
+    volumes: [mongo_data:/data/db]
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+
+  order-service:
+    build: ./services/order_services
+    container_name: order-service
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./services/order_services:/app
+      - /app/node_modules
+    command: npm run dev
+
+  kitchen-service:
+    build: ./services/kitchen_services
+    container_name: kitchen-service
+    depends_on:
+      - kafka
+      - mongodb
+    ports:
+      - "3001:3001"
+  
+  market-service:
+    build: ./services/market_services
+    container_name: market-service
+    ports:
+      - "3002:3002"
+
+  inventory-service:
+    build: ./services/inventory_services
+    container_name: inventory-services
+    depends_on:
+      - kafka
+      - postgres
+      - market-service
+    ports:
+      - "3003:3003"
+  
+  ui-service:
+    build: ./services/ui_services
+    container_name: ui-service
+    depends_on:
+      - order-service
+      - kitchen-service
+      - market-service
+      - inventory-service
+    ports:
+      - "3004:3004"
+
+volumes:
+  postgres_data:
+  mongo_data:
