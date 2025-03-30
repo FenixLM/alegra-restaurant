@@ -56,6 +56,10 @@ services:
       - mongodb
     ports:
       - "3001:3001"
+    volumes:
+      - ./services/kitchen_services:/app
+      - /app/node_modules
+    command: npm run dev
   
   market-service:
     build: ./services/market_services
