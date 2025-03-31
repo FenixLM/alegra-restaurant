@@ -1,18 +1,24 @@
 const  kafka  = require("./kafkaConfig");
-const { processIngredientRequest } = require("../services/inventoryService");
+const { processIngredientRequest, insertIngredient } = require("../services/inventoryService");
 
 const consumer = kafka.consumer({ groupId: "inventory-group" });
 
 const consumeIngredientRequests = async () => {
   await consumer.connect();
-  await consumer.subscribe({ topic: "ingredient_requests", fromBeginning: true });
+  await consumer.subscribe({ topics: ["ingredient_requests", "ingredient_deliveries"], fromBeginning: true });
 
   await consumer.run({
-    eachMessage: async ({ message }) => {
-      const orderRequest = JSON.parse(message.value.toString());
-      console.log("Recibida solicitud de ingredientes:", orderRequest);
+    eachMessage: async ({ topic, message }) => {
+      const data = JSON.parse(message.value.toString());
+      console.log("Recibida solicitud de ingredientes:", data);
 
-      await processIngredientRequest(orderRequest);
+      if (topic === "ingredient_requests") {
+        await processIngredientRequest(data);
+      }else if (topic === "ingredient_deliveries") {
+        console.log("Recibida entrega de ingredientes:", data);
+        await insertIngredient(data);
+      }
+
     },
   });
 };

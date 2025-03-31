@@ -74,6 +74,12 @@ services:
     container_name: market-service
     ports:
       - "3002:3002"
+    depends_on:
+      - kafka
+    volumes:
+      - ./services/market_services:/app
+      - /app/node_modules
+    command: npm run dev
 
   inventory-service:
     build: ./services/inventory_services
@@ -81,7 +87,7 @@ services:
     depends_on:
       - kafka
       - postgres
-      # - market-service
+      - market-service
     ports:
       - "3003:3003"
     volumes:
