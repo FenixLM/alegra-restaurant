@@ -1,9 +1,9 @@
 {
   "name": "order_services",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/app.js",
+    "dev": "nodemon src/index.js",
     "test": "jest --runInBand"
   },
   "keywords": [],
@@ -13,12 +13,12 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "kafkajs": "^2.2.4"
+    "kafkajs": "^2.2.4",
+    "pg": "^8.14.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",
     "nodemon": "^3.1.9",
-    "pg": "^8.14.1",
     "supertest": "^7.1.0",
     "testcontainers": "^10.23.0"
   }

@@ -1,23 +1,30 @@
-const request = require('supertest');
-const { app, pool } = require('../src/app'); 
 
-describe('Ordenes API', () => {
-  test('Debe crear una nueva orden', async () => {
-    const res = await request(app)
-      .post('/order')
-      .send({ status: 'pending' });
+jest.setTimeout(10000);
+require('dotenv').config();
+const { pool } = require('../src/db/postgres');
+const orderService = require('../src/services/orderService');
+const { connectProducer, disconnectProducer } = require('../src/kafka/producer');
 
-    expect(res.statusCode).toBe(201);
+beforeAll(async () => {
+  await pool.query('DELETE FROM orders');
+  await connectProducer();
+});
+
+afterAll(async () => {
+  await pool.end();
+  await disconnectProducer();
+});
+
+describe('Order Service', () => {
+  test('Debe crear una orden con estado "pending"', async () => {
+    const order = await orderService.createOrder();
+    expect(order).toHaveProperty('id');
+    expect(order.order_status).toBe('pending');
   });
 
   test('Debe obtener todas las órdenes', async () => {
-    const res = await request(app).get('/orders');
-
-    expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-  });
-
-  afterAll(async () => {
-    await pool.end();
+    const orders = await orderService.getOrders();
+    expect(Array.isArray(orders)).toBe(true);
+    expect(orders.length).toBeGreaterThan(0);
   });
 });

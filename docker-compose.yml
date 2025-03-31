@@ -7,12 +7,19 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports: ["5432:5432"]
-    volumes: [postgres_data:/var/lib/postgresql/data]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./data/postgres:/docker-entrypoint-initdb.d
 
   mongodb:
     image: mongo:latest
-    ports: ["27017:27017"]
-    volumes: [mongo_data:/data/db]
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./data/mongo:/docker-entrypoint-initdb.d
+    command: ["mongod"]
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -53,6 +60,7 @@ services:
     container_name: kitchen-service
     depends_on:
       - kafka
+      - postgres
       - mongodb
     ports:
       - "3001:3001"
