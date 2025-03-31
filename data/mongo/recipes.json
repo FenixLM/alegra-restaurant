@@ -2,69 +2,69 @@
   {
     "name": "Grilled Chicken Salad",
     "ingredients": [
-      { "ingredient": "chicken", "quantity": "1" },
-      { "ingredient": "lettuce", "quantity": "4" },
-      { "ingredient": "tomato", "quantity": "1" },
-      { "ingredient": "onion", "quantity": "1" },
-      { "ingredient": "lemon", "quantity": "1" },
-      { "ingredient": "cheese", "quantity": "1" }
+      { "name": "chicken", "quantity": "1" },
+      { "name": "lettuce", "quantity": "4" },
+      { "name": "tomato", "quantity": "1" },
+      { "name": "onion", "quantity": "1" },
+      { "name": "lemon", "quantity": "1" },
+      { "name": "cheese", "quantity": "1" }
     ],
     "instructions": "Grill the chicken and slice it. Chop the lettuce, tomato, and onion. Mix all ingredients in a bowl, squeeze lemon juice on top, and sprinkle cheese before serving."
   },
   {
     "name": "Cheesy Meat and Potato Bake",
     "ingredients": [
-      { "ingredient": "meat", "quantity": "1" },
-      { "ingredient": "potato", "quantity": "2" },
-      { "ingredient": "cheese", "quantity": "2" },
-      { "ingredient": "onion", "quantity": "1" }
+      { "name": "meat", "quantity": "1" },
+      { "name": "potato", "quantity": "2" },
+      { "name": "cheese", "quantity": "2" },
+      { "name": "onion", "quantity": "1" }
     ],
     "instructions": "Cook the meat with chopped onions. Slice and bake potatoes until soft. Layer the cooked meat, potatoes, and cheese in a baking dish, then bake until the cheese is melted."
   },
   {
     "name": "Chicken and Rice Bowl",
     "ingredients": [
-      { "ingredient": "chicken", "quantity": "1" },
-      { "ingredient": "rice", "quantity": "1" },
-      { "ingredient": "onion", "quantity": "1" },
-      { "ingredient": "lemon", "quantity": "1" }
+      { "name": "chicken", "quantity": "1" },
+      { "name": "rice", "quantity": "1" },
+      { "name": "onion", "quantity": "1" },
+      { "name": "lemon", "quantity": "1" }
     ],
     "instructions": "Cook the rice. Sauté the chicken with onions until golden brown. Serve the chicken over rice and drizzle with fresh lemon juice."
   },
   {
     "name": "Meat Lettuce Wraps",
     "ingredients": [
-      { "ingredient": "meat", "quantity": "1" },
-      { "ingredient": "lettuce", "quantity": "4" },
-      { "ingredient": "onion", "quantity": "1" },
-      { "ingredient": "ketchup", "quantity": "3" }
+      { "name": "meat", "quantity": "1" },
+      { "name": "lettuce", "quantity": "4" },
+      { "name": "onion", "quantity": "1" },
+      { "name": "ketchup", "quantity": "3" }
     ],
     "instructions": "Cook the meat with chopped onions. Add ketchup for flavor. Serve the cooked meat wrapped in fresh lettuce leaves."
   },
   {
     "name": "Tomato Rice with Chicken",
     "ingredients": [
-      { "ingredient": "rice", "quantity": "1" },
-      { "ingredient": "tomato", "quantity": "1" },
-      { "ingredient": "chicken", "quantity": "1" },
-      { "ingredient": "onion", "quantity": "1" },
-      { "ingredient": "lemon", "quantity": "1" }
+      { "name": "rice", "quantity": "1" },
+      { "name": "tomato", "quantity": "1" },
+      { "name": "chicken", "quantity": "1" },
+      { "name": "onion", "quantity": "1" },
+      { "name": "lemon", "quantity": "1" }
     ],
     "instructions": "Cook rice with chopped tomatoes and onions. Grill or sauté chicken and serve it over the tomato rice with a squeeze of lemon juice."
   },
   {
     "name": "Ultimate Mixed Dish",
     "ingredients": [
-      { "ingredient": "tomato", "quantity": "1" },
-      { "ingredient": "lemon", "quantity": "1" },
-      { "ingredient": "potato", "quantity": "2" },
-      { "ingredient": "rice", "quantity": "1" },
-      { "ingredient": "ketchup", "quantity": "3" },
-      { "ingredient": "lettuce", "quantity": "4" },
-      { "ingredient": "onion", "quantity": "1" },
-      { "ingredient": "cheese", "quantity": "2" },
-      { "ingredient": "meat", "quantity": "1" },
-      { "ingredient": "chicken", "quantity": "1" }
+      { "name": "tomato", "quantity": "1" },
+      { "name": "lemon", "quantity": "1" },
+      { "name": "potato", "quantity": "2" },
+      { "name": "rice", "quantity": "1" },
+      { "name": "ketchup", "quantity": "3" },
+      { "name": "lettuce", "quantity": "4" },
+      { "name": "onion", "quantity": "1" },
+      { "name": "cheese", "quantity": "2" },
+      { "name": "meat", "quantity": "1" },
+      { "name": "chicken", "quantity": "1" }
     ],
     "instructions": "Boil the potatoes and rice separately. Sauté the meat and chicken with onions. Chop the tomato and lettuce. Mix everything in a large pan, adding ketchup and cheese. Stir well and serve with a squeeze of lemon."
   }

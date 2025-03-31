@@ -21,19 +21,28 @@ const processOrder = async (order) => {
 
   console.log(`Selected recipe: ${JSON.stringify(recipe)}`);
 
-  if (!order._id) {
+  if (!recipe._id) {
     console.error('Order ID not found!');
     return;
   }
 
   await pool.query('UPDATE orders SET order_status = $1, recipe_id = $2 WHERE id = $3', ['in_progress', recipe._id, order.id]);
 
-  setTimeout(async () => {
-    await pool.query('UPDATE orders SET order_status = $1 WHERE id = $2', ['completed', order.id]);
-    console.log(`Order ${order.id} completed`);
+  await sendMessage('ingredient_requests', { id: order.id, recipe: recipe });
 
-    await sendMessage('order_status', { id: order.id, status: 'completed', recipe: recipe.name });
-  }, 5000);
 };
 
-module.exports = { processOrder };
+const startCooking = async (orderId) => {
+
+  console.log(`Starting cooking for order ${orderId}...`);
+
+
+  await pool.query('UPDATE orders SET order_status = $1 WHERE id = $2', ['completed', orderId]);
+  console.log(`Order ${orderId} is now completed`);
+
+  await sendMessage('order_status', { id: orderId, status: 'completed' });
+
+}
+
+
+module.exports = { processOrder,startCooking };

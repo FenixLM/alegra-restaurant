@@ -81,9 +81,13 @@ services:
     depends_on:
       - kafka
       - postgres
-      - market-service
+      # - market-service
     ports:
       - "3003:3003"
+    volumes:
+      - ./services/inventory_services:/app
+      - /app/node_modules
+    command: npm run dev
   
   ui-service:
     build: ./services/ui_services
