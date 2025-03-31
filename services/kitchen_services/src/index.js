@@ -4,6 +4,7 @@ const { connectDB } = require('./db/postgres');
 const { consumeOrders } = require('./kafka/consumer');
 const { connectProducer } = require('./kafka/producer');
 const kitchenService = require('./services/kitchenService');
+const { connectMongo } = require('./db/mongo');
 
 const PORT = process.env.PORT || 3001;
 
@@ -21,6 +22,7 @@ const server = http.createServer(requestHandler);
 
 server.listen(PORT, async () => {
   await connectDB();
+  await connectMongo();
   await connectProducer();
   await consumeOrders();
   console.log(`🚀 Kitchen Service running on http://localhost:${PORT}`);
