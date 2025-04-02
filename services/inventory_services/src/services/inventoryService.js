@@ -84,7 +84,9 @@ const insertIngredient = async (data) => {
     await client.query("COMMIT");
     console.log("Ingredientes insertados correctamente:", ingredientsShopping);
 
+    await updateMarketPurchase(data);
     await processIngredientRequest(orderRequest);
+
 
 
   } catch (error) {
@@ -93,11 +95,47 @@ const insertIngredient = async (data) => {
   } finally {
     client.release();
   }
+}
 
 
 
  
+  const updateMarketPurchase = async (data) => {
+
+    const ingredientsShopping = data.ingredients;
+    const orderRequest = data.orderRequest;
+    console.log("data", data);
+    
   
+    const client = await pool.connect();
+  
+  
+    try {
+      console.log("🔍 Verificando ingredientes para:", orderRequest);
+  
+      await client.query("BEGIN");
+  
+      for (const item of ingredientsShopping) {
+        const res = await client.query(
+          "INSERT INTO market_purchases(name, quantity, order_id) VALUES ($1, $2, $3) ",
+          [item.name, item.quantity, orderRequest.id]  
+        );
+        console.log("res", res)
+        console.log("item", item)
+        console.log("item.name", item.name)
+      }
+  
+      await client.query("COMMIT");
+      console.log("Ingredientes agregados en historial de compras correctamente:", ingredientsShopping);
+  
+
+  
+    } catch (error) {
+      await client.query("ROLLBACK");
+      console.error("Error insertando ingredientes:", error);
+    } finally {
+      client.release();
+    }
 }
 
 module.exports = { processIngredientRequest, insertIngredient };

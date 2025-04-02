@@ -16,12 +16,24 @@ class UiService {
   }
 
   async getRecipes() {
-    // usamos mongo para obtener las recetas
     const db = await connectMongo();
     const collection = db.collection('recipes');
 
     const recipes = await collection.find({}).toArray();
     return recipes;
+  }
+
+  async getPurchases() {
+    const client = await pool.connect();
+    try {
+      const result = await client.query('SELECT * FROM market_purchases');
+      return result.rows;
+    } catch (error) {
+      console.error('Error obteniendo compras:', error);
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 }
 

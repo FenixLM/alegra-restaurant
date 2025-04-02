@@ -24,7 +24,7 @@ const consumeMarketOrders = async () => {
 
       console.log('🛒 Resultados de la compra:', shoppingResult);
 
-      await sendMessage('ingredient_deliveries', {
+      await sendMessage('ingredient_purchases', {
         orderRequest: data.orderRequest,
         ingredients: shoppingResult,
       });

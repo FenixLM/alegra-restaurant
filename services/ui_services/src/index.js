@@ -7,8 +7,6 @@ const { connectMongo } = require('./db/mongo');
 
 const PORT = process.env.PORT || 3004;
 const ORDER_SERVICE_URL = "http://order-service:3000";
-const INVENTORY_SERVICE_URL = "http://inventory_service:3002";
-const MARKET_SERVICE_URL = "http://market_service:3003";
 
 const fetchData = (url, callback) => {
   const protocol = url.startsWith("https") ? https : http;
@@ -32,6 +30,41 @@ const fetchData = (url, callback) => {
     callback(error, null);
   });
 };
+const postData = (url, data, callback) => {
+  const protocol = url.startsWith("https") ? https : http;
+  const jsonData = JSON.stringify(data);
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(jsonData),
+    },
+  };
+
+  const req = protocol.request(url, options, (res) => {
+    let responseData = "";
+
+    res.on("data", (chunk) => {
+      responseData += chunk;
+    });
+
+    res.on("end", () => {
+      try {
+        callback(null, JSON.parse(responseData));
+      } catch (error) {
+        callback(error, null);
+      }
+    });
+  });
+
+  req.on("error", (error) => {
+    callback(error, null);
+  });
+
+  req.write(jsonData);
+  req.end();
+};
 
 const requestHandler = async (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -52,31 +85,37 @@ const requestHandler = async (req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(recipes));
 
-    
-
-
-    // } else if (req.url === "/market/history") {
-    //   fetchData(`${MARKET_SERVICE_URL}/history`, (err, data) => {
-    //     res.writeHead(err ? 500 : 200);
-    //     res.end(JSON.stringify(err ? { error: "Error obteniendo historial de compras" } : data));
-    //   });
-
-    // } else if (req.url === "/kitchen/history") {
-    //   fetchData(`${KITCHEN_SERVICE_URL}/history`, (err, data) => {
-    //     res.writeHead(err ? 500 : 200);
-    //     res.end(JSON.stringify(err ? { error: "Error obteniendo historial de pedidos" } : data));
-    //   });
-
-    // } else if (req.url === "/recipes") {
-    //   fetchData(`${INVENTORY_SERVICE_URL}/recipes`, (err, data) => {
-    //     res.writeHead(err ? 500 : 200);
-    //     res.end(JSON.stringify(err ? { error: "Error obteniendo recetas" } : data));
-    //   });
+    } else if (req.url === "/purchases") {
+      const purchases = await uiService.getPurchases();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(purchases));
 
     } else {
       res.writeHead(404);
       res.end(JSON.stringify({ error: "Endpoint no encontrado" }));
     }
+
+  }else if (req.method === "POST" && req.url === "/order") {
+    let body = "";
+
+    req.on("data", (chunk) => {
+      body += chunk;
+    });
+
+    req.on("end", () => {
+      try {
+        const order = body ? JSON.parse(body) : null;
+        postData(`${ORDER_SERVICE_URL}/order`, order, (err, data) => {
+          res.writeHead(err ? 500 : 201);
+          res.end(JSON.stringify(err ? { error: "Error creando orden" } : data));
+        });
+      } catch (error) {
+        console.log(error);
+        
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: "Datos inválidos" }));
+      }
+    });
 
   } else {
     res.writeHead(405);

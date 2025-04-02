@@ -5,7 +5,7 @@ const consumer = kafka.consumer({ groupId: "inventory-group" });
 
 const consumeIngredientRequests = async () => {
   await consumer.connect();
-  await consumer.subscribe({ topics: ["ingredient_requests", "ingredient_deliveries"], fromBeginning: true });
+  await consumer.subscribe({ topics: ["ingredient_requests", "ingredient_purchases"], fromBeginning: true });
 
   await consumer.run({
     eachMessage: async ({ topic, message }) => {
@@ -14,7 +14,7 @@ const consumeIngredientRequests = async () => {
 
       if (topic === "ingredient_requests") {
         await processIngredientRequest(data);
-      }else if (topic === "ingredient_deliveries") {
+      }else if (topic === "ingredient_purchases") {
         console.log("Recibida entrega de ingredientes:", data);
         await insertIngredient(data);
       }
