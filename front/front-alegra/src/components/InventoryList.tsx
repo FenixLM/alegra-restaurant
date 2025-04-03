@@ -13,7 +13,9 @@ const InventoryList = () => {
   useEffect(() => {
     const getDataInventory = async () => {
       try {
-        const response = await fetch(`http://localhost:3004/inventory`);
+        const response = await fetch(
+          `https://testapi.urbancitytravel.com/inventory`
+        );
         if (!response.ok) {
           throw new Error("Error fetching ingredients");
         }

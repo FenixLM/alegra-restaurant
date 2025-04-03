@@ -25,13 +25,16 @@ const OrderButton = ({
     const createOrder = async () => {
       try {
         // Simulate a network request to create an order
-        const response = await fetch("http://localhost:3004/order", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ recipeId: 1 }), // Example payload
-        });
+        const response = await fetch(
+          "https://testapi.urbancitytravel.com/order",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ recipeId: 1 }), // Example payload
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Error creating order");

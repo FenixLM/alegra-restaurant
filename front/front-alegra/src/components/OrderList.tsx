@@ -18,7 +18,9 @@ const OrderList = () => {
   useEffect(() => {
     const getDataOrders = async () => {
       try {
-        const response = await fetch(`http://localhost:3004/orders`);
+        const response = await fetch(
+          `https://testapi.urbancitytravel.com/orders`
+        );
         if (!response.ok) {
           throw new Error("Error fetching orders");
         }

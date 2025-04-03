@@ -14,7 +14,9 @@ const PurchaseHistory = () => {
   useEffect(() => {
     const getDataPurchaseHistory = async () => {
       try {
-        const response = await fetch(`http://localhost:3004/purchases`);
+        const response = await fetch(
+          `https://testapi.urbancitytravel.com/purchases`
+        );
         if (!response.ok) {
           throw new Error("Error fetching purchase history");
         }
