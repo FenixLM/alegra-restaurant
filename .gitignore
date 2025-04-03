@@ -24,10 +24,7 @@ yarn-error.log*
 dump/
 
 
-pgdata/
-*.pid
-*.tar
-*.sql
+
 
 
 kafka-logs/

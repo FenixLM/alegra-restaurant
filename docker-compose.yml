@@ -90,7 +90,7 @@ services:
 
   inventory-service:
     build: ./services/inventory_services
-    container_name: inventory-services
+    container_name: inventory-service
     depends_on:
       - kafka
       - postgres
