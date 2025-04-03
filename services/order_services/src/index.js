@@ -3,6 +3,7 @@ const http = require('http');
 const orderService = require('./services/orderService');
 const { connectDB } = require('./db/postgres');
 const { connectProducer } = require('./kafka/producer');
+const { connectMongo } = require('./db/mongo');
 
 const PORT = process.env.PORT || 3000;
 
@@ -38,6 +39,9 @@ const startServer = async () => {
     console.log('Iniciando Kafka Producer...');
     await connectProducer();
     console.log('Kafka Producer listo.');
+
+  await connectMongo();
+    console.log('MongoDB conectado.');
 
     server.listen(PORT, () => {
       console.log(`Order Service corriendo en http://localhost:${PORT}`);

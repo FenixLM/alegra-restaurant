@@ -66,14 +66,29 @@ const postData = (url, data, callback) => {
   req.end();
 };
 
+const handleCORS = (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); 
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST"); 
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); 
+
+
+  if (req.method === "OPTIONS") {
+    res.writeHead(204);
+    res.end();
+    return false;
+  }
+  return true; 
+};
+
 const requestHandler = async (req, res) => {
+  if (!handleCORS(req, res)) return;
   res.setHeader("Content-Type", "application/json");
 
   if (req.method === "GET") {
     if (req.url === "/orders") {
       fetchData(`${ORDER_SERVICE_URL}/orders`, (err, data) => {
         res.writeHead(err ? 500 : 200);
-        res.end(JSON.stringify(err ? { error: "Error obteniendo órdenes" } : data));
+        res.end(JSON.stringify(err ? { error: `Error obteniendo órdenes, ${err}` } : data));
       });
 
     } else if (req.url === "/inventory") {
