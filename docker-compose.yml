@@ -1,28 +1,4 @@
 services:
-  postgres:
-    image: postgres:latest
-    container_name: postgres-container-alegra
-    environment:
-      POSTGRES_DB: restaurant
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    ports: ["5432:5432"]
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./data/postgres:/docker-entrypoint-initdb.d
-    restart: unless-stopped
-
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    restart: always
-    volumes:
-      - mongo_data:/data/db
-      - ./data/mongo:/docker-entrypoint-initdb.d
-    command: ["mongod"]
-
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
@@ -45,6 +21,30 @@ services:
     ports:
       - "9092:9092"
     restart: always
+  
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container-alegra
+    environment:
+      POSTGRES_DB: restaurant
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports: ["5432:5432"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./data/postgres:/docker-entrypoint-initdb.d
+    restart: always
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./data/mongo:/docker-entrypoint-initdb.d
+    command: ["mongod"]
+    restart: always
 
   order-service:
     build: ./services/order_services
@@ -57,10 +57,10 @@ services:
     volumes:
       - ./services/order_services:/app
       - /app/node_modules
-    restart: always
     # command: npm run dev
     # restart: unless-stopped
     command: pm2-runtime start ecosystem.config.js
+    restart: always
 
   kitchen-service:
     build: ./services/kitchen_services
@@ -71,28 +71,24 @@ services:
       - mongodb
     ports:
       - "3001:3001"
-    restart: always
     volumes:
       - ./services/kitchen_services:/app
       - /app/node_modules
-    # command: npm run dev
-    # restart: unless-stopped
     command: pm2-runtime start ecosystem.config.js
+    restart: always
   
   market-service:
     build: ./services/market_services
     container_name: market-service
     ports:
       - "3002:3002"
-    restart: always
     depends_on:
       - kafka
     volumes:
       - ./services/market_services:/app
       - /app/node_modules
-    # command: npm run dev
-    # restart: unless-stopped
     command: pm2-runtime start ecosystem.config.js
+    restart: always
 
   inventory-service:
     build: ./services/inventory_services
@@ -103,13 +99,11 @@ services:
       - market-service
     ports:
       - "3003:3003"
-    restart: always
     volumes:
       - ./services/inventory_services:/app
       - /app/node_modules
-    # command: npm run dev
-    # restart: unless-stopped
     command: pm2-runtime start ecosystem.config.js
+    restart: always
   
   ui-service:
     build: ./services/ui_services
@@ -121,13 +115,11 @@ services:
       - inventory-service
     ports:
       - "3004:3004"
-    restart: always
     volumes:
       - ./services/ui_services:/app
       - /app/node_modules
-    # command: npm run dev
-    # restart: unless-stopped
     command: pm2-runtime start ecosystem.config.js
+    restart: always
 
 volumes:
   postgres_data:
