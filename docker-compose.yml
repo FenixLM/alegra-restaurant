@@ -17,11 +17,11 @@ services:
     container_name: mongodb
     ports:
       - "27017:27017"
+    restart: always
     volumes:
       - mongo_data:/data/db
       - ./data/mongo:/docker-entrypoint-initdb.d
     command: ["mongod"]
-    restart: unless-stopped
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -30,7 +30,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
       - "2181:2181"
-    restart: unless-stopped
+    restart: always
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -44,7 +44,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     ports:
       - "9092:9092"
-    restart: unless-stopped
+    restart: always
 
   order-service:
     build: ./services/order_services
@@ -57,6 +57,7 @@ services:
     volumes:
       - ./services/order_services:/app
       - /app/node_modules
+    restart: always
     # command: npm run dev
     # restart: unless-stopped
     command: pm2-runtime start ecosystem.config.js
@@ -70,6 +71,7 @@ services:
       - mongodb
     ports:
       - "3001:3001"
+    restart: always
     volumes:
       - ./services/kitchen_services:/app
       - /app/node_modules
@@ -82,6 +84,7 @@ services:
     container_name: market-service
     ports:
       - "3002:3002"
+    restart: always
     depends_on:
       - kafka
     volumes:
@@ -100,6 +103,7 @@ services:
       - market-service
     ports:
       - "3003:3003"
+    restart: always
     volumes:
       - ./services/inventory_services:/app
       - /app/node_modules
@@ -117,6 +121,7 @@ services:
       - inventory-service
     ports:
       - "3004:3004"
+    restart: always
     volumes:
       - ./services/ui_services:/app
       - /app/node_modules
