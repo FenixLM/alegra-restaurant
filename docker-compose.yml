@@ -83,6 +83,8 @@ services:
       - "3002:3002"
     depends_on:
       - kafka
+      - postgres
+      - mongodb
     volumes:
       - ./services/market_services:/app
       - /app/node_modules
