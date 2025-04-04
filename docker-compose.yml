@@ -44,7 +44,6 @@ services:
       - mongo_data:/data/db
       - ./data/mongo:/docker-entrypoint-initdb.d
     command: ["mongod"]
-    restart: always
 
   order-service:
     build: ./services/order_services
