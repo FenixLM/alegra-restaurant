@@ -57,8 +57,9 @@ services:
     volumes:
       - ./services/order_services:/app
       - /app/node_modules
-    command: npm run dev
-    restart: unless-stopped
+    # command: npm run dev
+    # restart: unless-stopped
+    command: pm2-runtime start ecosystem.config.js
 
   kitchen-service:
     build: ./services/kitchen_services
@@ -72,8 +73,9 @@ services:
     volumes:
       - ./services/kitchen_services:/app
       - /app/node_modules
-    command: npm run dev
-    restart: unless-stopped
+    # command: npm run dev
+    # restart: unless-stopped
+    command: pm2-runtime start ecosystem.config.js
   
   market-service:
     build: ./services/market_services
@@ -85,8 +87,9 @@ services:
     volumes:
       - ./services/market_services:/app
       - /app/node_modules
-    command: npm run dev
-    restart: unless-stopped
+    # command: npm run dev
+    # restart: unless-stopped
+    command: pm2-runtime start ecosystem.config.js
 
   inventory-service:
     build: ./services/inventory_services
@@ -100,8 +103,9 @@ services:
     volumes:
       - ./services/inventory_services:/app
       - /app/node_modules
-    command: npm run dev
-    restart: unless-stopped
+    # command: npm run dev
+    # restart: unless-stopped
+    command: pm2-runtime start ecosystem.config.js
   
   ui-service:
     build: ./services/ui_services
@@ -116,8 +120,9 @@ services:
     volumes:
       - ./services/ui_services:/app
       - /app/node_modules
-    command: npm run dev
-    restart: unless-stopped
+    # command: npm run dev
+    # restart: unless-stopped
+    command: pm2-runtime start ecosystem.config.js
 
 volumes:
   postgres_data:
