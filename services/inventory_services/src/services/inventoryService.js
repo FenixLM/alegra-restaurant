@@ -21,7 +21,7 @@ const processIngredientRequest = async (orderRequest) => {
 
       const available = res.rows[0]?.quantity || 0;
 
-      if (available < item.quantity) {
+      if (available <= item.quantity) {
         missingIngredients.push({ name: item.name, quantity: item.quantity - available });
       }
     }
