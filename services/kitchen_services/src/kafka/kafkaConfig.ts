@@ -15,7 +15,7 @@ if (brokers.length === 0) {
 }
 
 const kafka = new Kafka({
-  clientId: "market-service",
+  clientId: "kitchen_service",
   brokers,
 });
 

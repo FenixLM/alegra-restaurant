@@ -74,6 +74,7 @@ services:
     volumes:
       - ./services/kitchen_services:/app
       - /app/node_modules
+      - /app/dist
     command: pm2-runtime start ecosystem.config.js
     restart: always
   
