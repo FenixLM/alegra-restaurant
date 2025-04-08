@@ -1,8 +1,13 @@
-const axios = require("axios");
+import axios from "axios";
 
 const MARKET_URL = "https://recruitment.alegra.com/api/farmers-market/buy";
 
-const buyIngredient = async (ingredient) => {
+interface BuyResult {
+  name: string;
+  quantity: number;
+}
+
+export const buyIngredient = async (ingredient: string): Promise<BuyResult> => {
   try {
     const response = await axios.get(MARKET_URL, {
       params: { ingredient },
@@ -12,16 +17,18 @@ const buyIngredient = async (ingredient) => {
 
     console.log(`🛒 Comprando ${ingredient}...`);
     console.log(`🛒 Cantidad comprada: ${quantitySold}`);
-    
 
     return {
       name: ingredient,
-      quantity: quantitySold || 0, // Si no hay stock, devuelve 0
+      quantity: quantitySold || 0,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error al comprar ${ingredient}:`, error.message);
-    return { ingredient, quantityBought: 0 };
+    return {
+      name: ingredient,
+      quantity: 0,
+    };
   }
 };
 
-module.exports = { buyIngredient };
+export default { buyIngredient };
