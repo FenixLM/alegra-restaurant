@@ -1,29 +1,31 @@
-const { pool } = require('../db/postgres');
-const { connectMongo } = require('../db/mongo');
+import { pool } from "../db/postgres";
+import { connectMongo } from "../db/mongo";
+import { Db, MongoClient } from "mongodb";
+import { Purchase } from "../interfaces/ui.interface";
 
 class UiService {
-  async getInventary() {
+  async getInventary(): Promise<any[]> {
     const client = await pool.connect();
     try {
-      const result = await client.query('SELECT * FROM ingredients');
+      const result = await client.query("SELECT * FROM ingredients");
       return result.rows;
     } catch (error) {
-      console.error('Error obteniendo inventario:', error);
+      console.error("Error obteniendo inventario:", error);
       throw error;
     } finally {
       client.release();
     }
   }
 
-  async getRecipes() {
-    const db = await connectMongo();
-    const collection = db.collection('recipes');
+  async getRecipes(): Promise<any[]> {
+    const db: Db = await connectMongo();
+    const collection = db.collection("recipes");
 
     const recipes = await collection.find({}).toArray();
     return recipes;
   }
 
-  async getPurchases() {
+  async getPurchases(): Promise<Purchase[]> {
     const client = await pool.connect();
     try {
       const query = `
@@ -40,7 +42,7 @@ class UiService {
         GROUP BY order_id;
       `;
       const result = await client.query(query);
-      return result.rows;  // Devuelve los datos agrupados
+      return result.rows; // Devuelve los datos agrupados
     } catch (error) {
       console.error("Error obteniendo compras:", error);
       throw error;
@@ -48,7 +50,6 @@ class UiService {
       client.release();
     }
   }
-  
 }
 
-module.exports = new UiService();
+export default new UiService();

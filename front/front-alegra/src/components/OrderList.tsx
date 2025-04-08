@@ -19,7 +19,8 @@ const OrderList = () => {
     const getDataOrders = async () => {
       try {
         const response = await fetch(
-          `https://testapi.urbancitytravel.com/orders`
+          `http://localhost:3004/orders`
+          // `https://testapi.urbancitytravel.com/orders`
         );
         if (!response.ok) {
           throw new Error("Error fetching orders");

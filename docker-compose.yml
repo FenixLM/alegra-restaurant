@@ -107,6 +107,7 @@ services:
     volumes:
       - ./services/inventory_services:/app
       - /app/node_modules
+      - /app/dist
     command: pm2-runtime start ecosystem.config.js
     restart: always
   
@@ -123,6 +124,8 @@ services:
     volumes:
       - ./services/ui_services:/app
       - /app/node_modules
+      - /app/dist
+
     command: pm2-runtime start ecosystem.config.js
     restart: always
 

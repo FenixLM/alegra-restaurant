@@ -1,5 +1,5 @@
 import kafka from "./kafkaConfig";
-import kitchenService from "../services/kitchenService";
+import KitchenService from "../services/kitchenService";
 import { EachMessagePayload } from "kafkajs";
 
 const consumer = kafka.consumer({ groupId: "kitchen_group" });
@@ -24,9 +24,9 @@ export const consumeOrders = async () => {
       console.log(`📩 Mensaje recibido en el topic "${topic}":`, data);
 
       if (topic === "orders") {
-        await kitchenService.processOrder(data);
+        await KitchenService.processOrder(data);
       } else if (topic === "ingredient_deliveries" && data.status === "ready") {
-        await kitchenService.startCooking(data.orderId);
+        await KitchenService.startCooking(data.orderId);
       }
     },
   });

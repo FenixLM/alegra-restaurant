@@ -14,7 +14,8 @@ const InventoryList = () => {
     const getDataInventory = async () => {
       try {
         const response = await fetch(
-          `https://testapi.urbancitytravel.com/inventory`
+          `http://localhost:3004/inventory`
+          // `https://testapi.urbancitytravel.com/inventory`
         );
         if (!response.ok) {
           throw new Error("Error fetching ingredients");

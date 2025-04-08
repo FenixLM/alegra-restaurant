@@ -1,9 +1,8 @@
 import kafka from "./kafkaConfig";
-import { KafkaMessage } from "kafkajs";
 
 const producer = kafka.producer();
 
-const connectProducer = async () => {
+export const connectProducer = async () => {
   await producer.connect();
   console.log("Kafka Producer conectado");
 };

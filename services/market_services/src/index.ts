@@ -1,13 +1,14 @@
-require("dotenv").config();
-const { consumeMarketOrders } = require("./kafka/consumer");
-const { connectProducer } = require("./kafka/producer");
+import dotenv from "dotenv";
+import { consumeMarketOrders } from "./kafka/consumer";
+import { connectProducer } from "./kafka/producer";
 
-const startMarketService = async () => {
+dotenv.config();
+
+const startMarketService = async (): Promise<void> => {
   console.log("🚀 Iniciando Inventory Service...");
   await consumeMarketOrders();
 
   await connectProducer();
-
 };
 
 startMarketService();
