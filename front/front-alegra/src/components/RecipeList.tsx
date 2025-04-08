@@ -12,7 +12,8 @@ const RecipeList = () => {
     const getDataRecipes = async () => {
       try {
         const response = await fetch(
-          `https://testapi.urbancitytravel.com/recipes`
+          `http://localhost:3004/recipes`
+          // `https://testapi.urbancitytravel.com/recipes`
         );
         if (!response.ok) {
           throw new Error("Error fetching recipes");
